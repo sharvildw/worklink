@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Dashboard - WorkLink</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-briefcase"></i>
+                WorkLink
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="marketplace-workers.html">Find Workers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="post-job.html">Post Job</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <!-- Welcome Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-large bg-white text-primary me-3" id="userAvatar">U</div>
+                            <div>
+                                <h4 class="mb-1" id="userName">Welcome back!</h4>
+                                <p class="mb-0" id="userEmail">user@example.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="stat-number" id="totalPostedJobs">0</div>
+                    <div class="stat-label">Jobs Posted</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card" style="background: linear-gradient(135deg, #36d1dc, #5b86e5);">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number" id="openJobs">0</div>
+                    <div class="stat-label">Open Jobs</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card" style="background: linear-gradient(135deg, #f2994a, #f2c94c);">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="totalApplicants">0</div>
+                    <div class="stat-label">Total Applicants</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card" style="background: linear-gradient(135deg, #56ab2f, #a8e063);">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-number" id="hiredJobs">0</div>
+                    <div class="stat-label">Jobs Hired</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs mb-4" id="dashboardTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="posted-tab" data-bs-toggle="tab" data-bs-target="#posted" type="button">
+                    <i class="fas fa-briefcase me-2"></i>My Posted Jobs
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="applicants-tab" data-bs-toggle="tab" data-bs-target="#applicants" type="button">
+                    <i class="fas fa-users me-2"></i>Applicants
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="hired-tab" data-bs-toggle="tab" data-bs-target="#hired" type="button">
+                    <i class="fas fa-handshake me-2"></i>Hired Jobs
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button">
+                    <i class="fas fa-user me-2"></i>Profile
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Posted Jobs Tab -->
+            <div class="tab-pane fade show active" id="posted" role="tabpanel">
+                <div class="row g-4" id="postedJobsContainer">
+                    <!-- Jobs will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Applicants Tab -->
+            <div class="tab-pane fade" id="applicants" role="tabpanel">
+                <div class="row g-4" id="applicantsContainer">
+                    <!-- Applicants will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Hired Jobs Tab -->
+            <div class="tab-pane fade" id="hired" role="tabpanel">
+                <div class="row g-4" id="hiredJobsContainer">
+                    <!-- Hired jobs will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div class="tab-pane fade" id="profile" role="tabpanel">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h5 class="mb-4">Profile Settings</h5>
+                        
+                        <form onsubmit="updateProfile(event)">
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="profileName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" id="profileEmail" readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Phone</label>
+                                <div class="col-sm-9">
+                                    <input type="tel" class="form-control" id="profilePhone" 
+                                        placeholder="Enter your phone number">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Location</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="profileLocation" 
+                                        placeholder="Your city">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Company</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="profileCompany" 
+                                        placeholder="Your company name (optional)">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <hr class="my-4">
+                        
+                        <h6 class="mb-3">Account Actions</h6>
+                        <button class="btn btn-outline-danger" onclick="logout()">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <!-- Same footer as before -->
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api-proxy.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>
+

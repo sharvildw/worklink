@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - WorkLink</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-briefcase"></i>
+                WorkLink
+            </a>
+        </div>
+    </nav>
+
+    <section class="auth-shell">
+        <div class="container">
+            <div class="auth-layout">
+                <div class="auth-story-panel">
+                    <span class="section-kicker text-white">Registration</span>
+                    <h1 class="auth-panel-title">Create your WorkLink account</h1>
+                    <p class="auth-panel-copy">Join the 2026 project demo as an employer or worker and explore the full local hiring experience from account creation to dashboard actions.</p>
+                    <div class="auth-highlights">
+                        <div class="auth-highlight">
+                            <i class="fas fa-user-plus"></i>
+                            <div>
+                                <h6>Simple onboarding</h6>
+                                <p>Create an account with just the details needed to enter the project workflow.</p>
+                            </div>
+                        </div>
+                        <div class="auth-highlight">
+                            <i class="fas fa-people-group"></i>
+                            <div>
+                                <h6>Choose your role</h6>
+                                <p>Register either as an employer posting jobs or a worker looking for local opportunities.</p>
+                            </div>
+                        </div>
+                        <div class="auth-highlight">
+                            <i class="fas fa-laptop-code"></i>
+                            <div>
+                                <h6>Built for demo use</h6>
+                                <p>This page presents the project in a cleaner and more evaluation-ready layout.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="auth-quick-stats">
+                        <div class="auth-quick-stat">
+                            <strong>2 Roles</strong>
+                            <span>Employer or worker</span>
+                        </div>
+                        <div class="auth-quick-stat">
+                            <strong>Fast Setup</strong>
+                            <span>Minimal required data</span>
+                        </div>
+                        <div class="auth-quick-stat">
+                            <strong>Live Demo</strong>
+                            <span>Connected to backend</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="auth-form-shell">
+                    <div class="auth-form-intro">
+                        <span class="section-kicker">Register</span>
+                        <h3>Start with a new account</h3>
+                        <p class="auth-helper-text mb-0">Fill in your basic details, choose how you want to use the platform, and begin exploring the WorkLink project.</p>
+                    </div>
+                    <div class="card auth-form-card">
+                        <div class="card-body">
+                            <form onsubmit="register(event)">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Create a password" required>
+                                    <div class="form-text">Must be at least 6 characters long.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="location" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="location" placeholder="City">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">I want to join as</label>
+                                    <div class="role-options">
+                                        <div class="role-card">
+                                            <input type="radio" name="role" id="roleUser" value="user" checked>
+                                            <label for="roleUser">
+                                                <strong><i class="fas fa-user me-2"></i>Employer</strong>
+                                                <span>Post jobs and hire local workers.</span>
+                                            </label>
+                                        </div>
+                                        <div class="role-card">
+                                            <input type="radio" name="role" id="roleWorker" value="worker">
+                                            <label for="roleWorker">
+                                                <strong><i class="fas fa-tools me-2"></i>Worker</strong>
+                                                <span>Show your skills and apply to jobs.</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 worker-only" style="display: none;">
+                                    <label for="skills" class="form-label">Skills</label>
+                                    <input type="text" class="form-control" id="skills" placeholder="e.g., Electrician, Plumber, Painter">
+                                </div>
+
+                                <div class="mb-4 form-check">
+                                    <input type="checkbox" class="form-check-input" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="terms.html">Terms & Conditions</a>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+                                <p class="auth-switch mb-0">
+                                    Already have an account? <a href="login.html">Login here</a>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api-proxy.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

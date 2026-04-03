@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - WorkLink</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-briefcase"></i> WorkLink</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="marketplace-workers.html">Find Workers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="marketplace-jobs.html">Find Jobs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="post-job.html">Post Job</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h2 id="jobTitle">Loading...</h2>
+                                <span class="badge badge-skill" id="jobCategory">General</span>
+                            </div>
+                            <div id="jobStatus"></div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4"><strong>Location</strong><div id="jobLocation"></div></div>
+                            <div class="col-md-4"><strong>Budget</strong><div id="jobBudget"></div></div>
+                            <div class="col-md-4"><strong>Duration</strong><div id="jobDuration"></div></div>
+                            <div class="col-md-4"><strong>Posted By</strong><div id="jobPostedBy"></div></div>
+                            <div class="col-md-4"><strong>Posted On</strong><div id="jobCreatedAt"></div></div>
+                            <div class="col-md-4"><strong>Applicants</strong><div id="jobApplicants"></div></div>
+                        </div>
+                        <h5>Description</h5>
+                        <p id="jobDescription"></p>
+                        <h5>Requirements</h5>
+                        <p id="jobRequirements"></p>
+                        <h5>Contact</h5>
+                        <p id="jobContactPhone"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Actions</h5>
+                        <div class="d-grid gap-2" id="jobActions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/job-details.js"></script>
+</body>
+</html>
+

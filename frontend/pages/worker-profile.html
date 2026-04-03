@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Profile - WorkLink</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background: #f6f8fb;
+        }
+
+        .profile-shell {
+            padding: 3rem 0 4rem;
+        }
+
+        .profile-card,
+        .profile-panel {
+            background: #fff;
+            border: 1px solid #e9eef5;
+            border-radius: 24px;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+        }
+
+        .profile-card {
+            padding: 2rem;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .profile-avatar-large {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #eef4ff;
+            margin-bottom: 1rem;
+        }
+
+        .mini-meta {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .availability-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-tile {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .profile-panel {
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 0.45rem 0.9rem;
+            background: #eef4ff;
+            color: #1d4ed8;
+            border-radius: 999px;
+            margin: 0.25rem 0.35rem 0.25rem 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .action-stack .btn {
+            border-radius: 14px;
+        }
+
+        @media (max-width: 991.98px) {
+            .profile-card {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-briefcase"></i> WorkLink</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="marketplace-workers.html">Find Workers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="marketplace-jobs.html">Find Jobs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="post-job.html">Post Job</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="profile-shell">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <aside class="profile-card text-center">
+                        <img src="" alt="Profile Avatar" class="profile-avatar-large" id="profileAvatar">
+                        <h2 class="h4 mb-1" id="workerName">Loading...</h2>
+                        <p class="mini-meta mb-3" id="workerProfession">Loading...</p>
+
+                        <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap mb-3">
+                            <span class="rating-stars" id="ratingStars"></span>
+                            <span class="mini-meta" id="reviewCount">(0 reviews)</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <span class="availability-badge bg-success text-white" id="availabilityBadge">
+                                <i class="fas fa-circle"></i>Available
+                            </span>
+                        </div>
+
+                        <div class="mini-meta mb-2" id="workerLocation"></div>
+                        <div class="mini-meta" id="workerExperience"></div>
+
+                        <div class="stat-grid">
+                            <div class="stat-tile">
+                                <div class="stat-number" id="completedJobs">0</div>
+                                <div class="mini-meta">Jobs Done</div>
+                            </div>
+                            <div class="stat-tile">
+                                <div class="stat-number" id="successRate">0%</div>
+                                <div class="mini-meta">Success</div>
+                            </div>
+                            <div class="stat-tile">
+                                <div class="stat-number" id="responseTime">0h</div>
+                                <div class="mini-meta">Response</div>
+                            </div>
+                            <div class="stat-tile">
+                                <div class="stat-number" id="hourlyRate">0</div>
+                                <div class="mini-meta">Hourly</div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="col-lg-8">
+                    <section class="profile-panel">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                            <div>
+                                <h3 class="panel-title mb-2">Profile Overview</h3>
+                                <p class="text-muted mb-0" id="workerBio">Loading...</p>
+                            </div>
+                            <div class="text-lg-end">
+                                <div class="h4 text-primary mb-1" id="rateDisplay">0/hr</div>
+                                <div class="mini-meta">Typical hourly rate</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="profile-panel">
+                        <h3 class="panel-title">Skills</h3>
+                        <div id="skillsContainer"></div>
+                    </section>
+
+                    <section class="profile-panel">
+                        <h3 class="panel-title">Languages</h3>
+                        <div id="languagesContainer"></div>
+                    </section>
+
+                    <section class="profile-panel">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-md-7">
+                                <h3 class="panel-title mb-2">Work With This Professional</h3>
+                                <p class="text-muted mb-0">Reach out directly or invite them to your job post in one click.</p>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="d-grid gap-2 action-stack">
+                                    <button class="btn btn-primary" onclick="contactWorker()">Contact Worker</button>
+                                    <button class="btn btn-outline-primary" onclick="inviteToJob()">Invite to Job</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/worker-profile.js"></script>
+</body>
+</html>
+
