@@ -8,18 +8,18 @@ const FOOTER_YEAR = 2026;
 
 const API_BASE_URL = (() => {
   const configuredBase = window.WORKLINK_API_BASE || localStorage.getItem("worklink_api_base") || "";
-  const defaultDevPort = localStorage.getItem("worklink_api_port") || "5003";
+  const defaultApiBase = "https://worklink-rtpb.onrender.com";
   if (configuredBase) {
     return configuredBase.replace(/\/$/, "");
   }
 
   if (window.location.protocol === "file:") {
-    return `http://localhost:${defaultDevPort}`;
+    return defaultApiBase;
   }
 
   const isLocalDevHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-  if (isLocalDevHost && window.location.port && window.location.port !== defaultDevPort) {
-    return `${window.location.protocol}//${window.location.hostname}:${defaultDevPort}`;
+  if (isLocalDevHost) {
+    return defaultApiBase;
   }
 
   return window.location.origin;
