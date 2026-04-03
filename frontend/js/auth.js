@@ -47,22 +47,50 @@ async function login(event) {
 
   const email = document.getElementById("email")?.value.trim();
   const password = document.getElementById("password")?.value;
+  const submitButton = event.target?.querySelector('button[type="submit"]');
+  const loginEndpoint = buildApiUrl("/api/auth/login");
 
   if (!email || !password) {
     showToast("Please fill in all fields", "error");
     return;
   }
 
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "Logging in...";
+  }
+
+  console.info("[WorkLink Auth] Attempting login", {
+    email,
+    endpoint: loginEndpoint,
+    method: "POST"
+  });
+
   try {
     const { token, user } = await Api.post("/api/auth/login", { email, password });
     setSession(token, user);
+    console.info("[WorkLink Auth] Login successful", {
+      email,
+      userId: user?._id,
+      role: user?.role
+    });
     showToast("Login successful");
 
     setTimeout(() => {
       window.location.href = getDashboardUrl(user);
     }, 500);
   } catch (error) {
+    console.error("[WorkLink Auth] Login failed", {
+      email,
+      endpoint: loginEndpoint,
+      message: error.message
+    });
     showToast(error.message, "error");
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = "Login";
+    }
   }
 }
 

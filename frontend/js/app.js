@@ -5,24 +5,32 @@
 
 const WorkLinkState = AppState;
 const FOOTER_YEAR = 2026;
+const DEFAULT_API_BASE_URL = window.WORKLINK_DEFAULT_API_BASE || "https://worklink-rtpb.onrender.com";
+const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
 
 const API_BASE_URL = (() => {
   const configuredBase = window.WORKLINK_API_BASE || localStorage.getItem("worklink_api_base") || "";
-  const defaultApiBase = "https://worklink-rtpb.onrender.com";
   if (configuredBase) {
-    return configuredBase.replace(/\/$/, "");
+    const trimmedConfiguredBase = configuredBase.trim().replace(/\/$/, "");
+
+    try {
+      const parsedUrl = new URL(trimmedConfiguredBase);
+      const isLocalFrontend = window.location.protocol === "file:" || LOCAL_HOSTS.includes(window.location.hostname);
+      const isLocalApi = LOCAL_HOSTS.includes(parsedUrl.hostname);
+
+      if (isLocalApi && !isLocalFrontend) {
+        console.warn(`[WorkLink API] Ignoring local API override on ${window.location.origin}: ${trimmedConfiguredBase}`);
+        localStorage.removeItem("worklink_api_base");
+        localStorage.removeItem("worklink_api_port");
+      } else {
+        return parsedUrl.origin;
+      }
+    } catch (_error) {
+      console.warn(`[WorkLink API] Ignoring invalid API base override: ${trimmedConfiguredBase}`);
+    }
   }
 
-  if (window.location.protocol === "file:") {
-    return defaultApiBase;
-  }
-
-  const isLocalDevHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-  if (isLocalDevHost) {
-    return defaultApiBase;
-  }
-
-  return window.location.origin;
+  return DEFAULT_API_BASE_URL;
 })();
 
 const buildApiUrl = (path) => {
@@ -37,6 +45,8 @@ const buildApiUrl = (path) => {
 const Api = {
   async request(path, options = {}) {
     const isFormData = options.body instanceof FormData;
+    const method = (options.method || "GET").toUpperCase();
+    const requestUrl = buildApiUrl(path);
     const headers = {
       ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(options.headers || {})
@@ -46,10 +56,24 @@ const Api = {
       headers.Authorization = `Bearer ${AppState.token}`;
     }
 
-    const response = await fetch(buildApiUrl(path), {
-      ...options,
-      headers
-    });
+    const logHeaders = { ...headers };
+    if (logHeaders.Authorization) {
+      logHeaders.Authorization = "Bearer [redacted]";
+    }
+
+    console.info(`[WorkLink API] ${method} ${requestUrl}`, { headers: logHeaders });
+
+    let response;
+    try {
+      response = await fetch(requestUrl, {
+        ...options,
+        method,
+        headers
+      });
+    } catch (error) {
+      console.error(`[WorkLink API] Network error for ${method} ${requestUrl}`, error);
+      throw new Error("Unable to reach the WorkLink API. Confirm the Render backend URL and CORS settings.");
+    }
 
     const text = await response.text();
     let data = {};
@@ -57,11 +81,17 @@ const Api = {
     try {
       data = text ? JSON.parse(text) : {};
     } catch (_error) {
-      data = {};
+      data = text ? { message: text.slice(0, 200) } : {};
     }
 
+    console.info(`[WorkLink API] ${method} ${requestUrl} -> ${response.status}`, data);
+
     if (!response.ok) {
-      throw new Error(data.error || data.message || data.msg || "Request failed");
+      const isNotFound = response.status === 404;
+      const fallbackMessage = isNotFound
+        ? `Route not found for ${method} ${requestUrl}. Verify the frontend API base and backend route path.`
+        : "Request failed";
+      throw new Error(data.error || data.message || data.msg || fallbackMessage);
     }
 
     return data;
@@ -635,5 +665,6 @@ window.requireUser = requireUser;
 window.logout = logout;
 window.getDashboardUrl = getDashboardUrl;
 window.syncCurrentUser = syncCurrentUser;
+window.WORKLINK_API_BASE = API_BASE_URL;
 window.API_BASE_URL = API_BASE_URL;
 window.buildApiUrl = buildApiUrl;

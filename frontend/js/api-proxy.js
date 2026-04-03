@@ -1,23 +1,41 @@
 ﻿(() => {
+  const DEFAULT_API_BASE = "https://worklink-rtpb.onrender.com";
+  const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
   const configuredBase = window.WORKLINK_API_BASE || localStorage.getItem("worklink_api_base") || "";
-  const trimmedConfiguredBase = configuredBase.replace(/\/$/, "");
-  const defaultApiBase = "https://worklink-rtpb.onrender.com";
+
+  const normalizeConfiguredBase = (value) => {
+    const trimmedValue = (value || "").trim().replace(/\/$/, "");
+    if (!trimmedValue) {
+      return "";
+    }
+
+    try {
+      const parsedUrl = new URL(trimmedValue);
+      const isLocalFrontend = window.location.protocol === "file:" || LOCAL_HOSTS.includes(window.location.hostname);
+      const isLocalApi = LOCAL_HOSTS.includes(parsedUrl.hostname);
+
+      if (isLocalApi && !isLocalFrontend) {
+        console.warn(`[WorkLink API] Ignoring local API override on ${window.location.origin}: ${trimmedValue}`);
+        localStorage.removeItem("worklink_api_base");
+        localStorage.removeItem("worklink_api_port");
+        return "";
+      }
+
+      return parsedUrl.origin;
+    } catch (_error) {
+      console.warn(`[WorkLink API] Ignoring invalid API base override: ${trimmedValue}`);
+      return "";
+    }
+  };
+
+  const normalizedConfiguredBase = normalizeConfiguredBase(configuredBase);
 
   const detectBaseUrl = () => {
-    if (trimmedConfiguredBase) {
-      return trimmedConfiguredBase;
+    if (normalizedConfiguredBase) {
+      return normalizedConfiguredBase;
     }
 
-    if (window.location.protocol === "file:") {
-      return defaultApiBase;
-    }
-
-    const isLocalDevHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-    if (isLocalDevHost) {
-      return defaultApiBase;
-    }
-
-    return window.location.origin;
+    return DEFAULT_API_BASE;
   };
 
   const apiBaseUrl = detectBaseUrl();
@@ -33,7 +51,9 @@
   };
 
   window.WORKLINK_API_BASE = apiBaseUrl;
+  window.WORKLINK_DEFAULT_API_BASE = DEFAULT_API_BASE;
   window.buildApiUrl = buildApiUrl;
+  console.info(`[WorkLink API] Base URL resolved to ${apiBaseUrl}`);
 
   window.fetch = (input, init) => {
     if (typeof input === "string") {
