@@ -127,7 +127,5 @@ Sharvil Waghmare
 GitHub: https://github.com/sharvildw
 
 ---
-
-## 📌 Status
-
-Project in development
+live project link:
+https://worklink1.netlify.app/pages/index.html
